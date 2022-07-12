@@ -32,6 +32,23 @@ getAllSpamList : async () => {
       message.error('Error')
       throw error
     }
+  },
+  deleteSpamHotline: async (id) => {
+    try {
+      const response = await axios.request({
+        method: 'DELETE',
+        baseURL: process.env.REACT_APP_BASE_URL,
+        url: `/delete-spam`,
+        data: {id}
+      })
+      return response
+    } catch (error)
+    
+    {
+      console.log(error)
+      message.error('Error')
+      throw error
+    }
   }
 };
 

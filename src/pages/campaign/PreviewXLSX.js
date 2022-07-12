@@ -41,7 +41,7 @@ export default function PreviewXLSX(data) {
         visible={visible}
         footer={<Button onClick={() => closeModal()}>Đóng</Button>}
       >
-        <Table columns={columns} dataIndex={tableData} />
+        <Table columns={columns} dataIndex={tableData}  />
       </Modal>
     </>
   );

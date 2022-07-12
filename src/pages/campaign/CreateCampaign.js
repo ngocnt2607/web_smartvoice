@@ -1,17 +1,12 @@
 import { PlusCircleOutlined } from "@ant-design/icons";
 import {
-  Button, DatePicker, Form,
+  Button, Form,
   Input, message, Modal,
   Spin
 } from "antd";
 import React, { useEffect, useState } from "react";
 import SpamAPI from "../../api/campaign.api";
 import validateMessages from "../../common/ValidateForm";
-import { DATE_TIME_FORMAT } from "../../const/date-time.const";
-import { convertDateByFormat } from "../../helper/convert-date.helper";
-import MockServe from "../../services/mock.service";
-import UploadAudio from "./UploadAudio";
-import UploadXLSX from "./UploadXLSX";
 
 export default function CreateSpamHotline() {
   const [form] = Form.useForm();
@@ -41,16 +36,15 @@ export default function CreateSpamHotline() {
   };
 
   const onSubmit = async (values) => {
-    setSpinning(true);
-    const {name} = values
-    const formData = new FormData()
-
-    formData.append('name', name)
-    formData.append('phoneNumber', phoneNumber.toString())
-    formData.append('mo ta', name)
-
     try {
-      const response = await SpamAPI.createCampaign(formData)
+      const {name, hotline, description} = values;
+      setSpinning(true);
+      const data = {
+        name,
+        hotline,
+        mota: description,
+      }
+      const response = await SpamAPI.createSpamHotline(data)
       setSpinning(false)
 
       if(response.status === 200) {
@@ -142,7 +136,7 @@ export default function CreateSpamHotline() {
                   whitespace: true,
                 },
               ]}
-              name={"name"}
+              name="name"
             >
               <Input placeholder="Vui lòng nhập tên campaign" />
             </Form.Item>
@@ -157,7 +151,7 @@ export default function CreateSpamHotline() {
                   whitespace: true,
                 },
               ]}
-              name={"phoneNumber"}
+              name='hotline'
             >
               <Input placeholder="Vui lòng nhập số Hotline" />
             </Form.Item>
@@ -170,7 +164,7 @@ export default function CreateSpamHotline() {
                   whitespace: true,
                 },
               ]}
-              name={"mo ta"}
+              name='description'
             >
               <Input placeholder="Vui lòng nhập mô tả" />
             </Form.Item>

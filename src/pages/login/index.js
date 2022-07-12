@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import logo from "../../assets/img/logongoc.png";
 import { DEFAULT_KEY_MENU } from "../../common/Wrapper";
 import { BaseContext } from "../../context/baseContext";
-import videobackground from "../../assets/video/videobackground.mp4";
+// import videobackground from "../../assets/video/videobackground.mp4";
 
 const Login = () => {
   const [form] = Form.useForm();
@@ -55,9 +55,9 @@ const Login = () => {
 
   return (
     <>
-      { <video autoPlay muted loop id="myVideo">
+      {/* { <video autoPlay muted loop id="myVideo">
         { <source src={videobackground} type="video/mp4" /> }
-      </video> }
+      </video> } */}
       <div
         style={{
           backgroundRepeat: "no-repeat",

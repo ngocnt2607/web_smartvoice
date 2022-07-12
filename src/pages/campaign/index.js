@@ -1,37 +1,75 @@
-import React, { useEffect, useState, useCallback } from "react";
-import { Table, Input, Button, message, Card, Pagination, Modal } from "antd";
+import { DeleteOutlined, ReloadOutlined, WarningTwoTone } from "@ant-design/icons";
+import { Button, Card, Input, Pagination, Table } from "antd";
+import confirm from "antd/lib/modal/confirm";
+import React, { useCallback, useEffect, useState } from "react";
+import SpamAPI from "../../api/campaign.api";
 import Wrapper from "../../common/Wrapper";
-import { ReloadOutlined } from "@ant-design/icons";
 import CreateSpamHotline from "./CreateCampaign";
-import MockService from "../../services/mock.service";
-import SpamAPI from "../../api/campaign.api"
-import { COLUMN_CONFIG } from './table.config';
-import {convertDateByFormat} from '../../helper/convert-date.helper'
-import {DATE_TIME_FORMAT} from '../../const/date-time.const'
-import {getDataByParams} from './campaign.helper'
 const { Search } = Input;
 
 export default function Campaign() {
-  const [data, setData] = useState([]);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
-  const [refresh, setRefresh] = useState(true);
   const [searchTxt, setSearchTxt] = useState("");
   const [total, setTotal] = useState(0);
+  const [data, setData] = useState([]);
   const [searchData, setSearchData] = useState([])
+
+  const COLUMN_CONFIG = [
+    {
+      dataIndex: 'name',
+      key: 'name',
+      title: 'Tên khách hàng',
+    },
+    {
+      dataIndex: 'hotline',
+      key: 'hotline',
+      title: 'Hotline',
+    },
+    {
+      dataIndex: 'note',
+      key: 'note',
+      title: 'Mô tả',
+    },
+    {
+      key: 'action',
+      title: 'Hành động',
+      render: (_, record) => {
+        const showDeleteConfirm = () => {
+          confirm({
+            title: 'Xóa bản ghi?',
+            icon: <WarningTwoTone twoToneColor="#ff4d4f" />,
+            content: 'Hành động này không thể hoàn tác. Bạn có chắc chắn muốn xóa bản ghi này?',
+            okText: 'OK',
+            okType: 'danger',
+            cancelText: 'Hủy bỏ',
+            onOk() {
+              handleDelte(record.id)
+            },
+            onCancel() {},
+          });
+        };
+        return (
+          <Button type="primary" icon={<DeleteOutlined />} danger shape="round" onClick={showDeleteConfirm}/>
+        )
+      }
+    },
+  ];
+
+  const handleDelte = async (id) => {
+    setLoading(true);
+    await SpamAPI.deleteSpamHotline(id);
+    setLoading(false);
+  }
    
-const getListData = useCallback(async () => {
+  const getListData = useCallback(async () => {
     setLoading(true);
     const response = await SpamAPI.getAllSpamList();
-    console.log(response)
-
+    const convertResponse = response.data.hotline?.map((item, index) => ({...item, key: index}))
     setLoading(false);
-    setData(response.data.hotline);
-    console.log(response.data.hotline)
-    setTotal(response.data?.hotline?.length);
-    //setSearchData(mapdata)
-    
-    
+    setTotal(convertResponse?.length);
+    setData(convertResponse);
+    setSearchData(convertResponse)
   }, []);
   
   useEffect(() => {
@@ -43,30 +81,21 @@ const getListData = useCallback(async () => {
     setPage(value);
   };
 
-
   const handleSearch = (value) => {
-    if (value !== searchTxt) {
-
-      const params = {
-        
-        page: page,
-        search: value,
-      };
-      const result = getDataByParams(params,data)
-      setSearchData(result.data)
-      setTotal(result.total)
+    const searchValue = value?.toLowerCase().trim();
+    if (searchValue !== searchTxt) {
+      const searchData = data.filter(item => item?.hotline.includes(searchValue))
+      setSearchData(searchData)
+      setTotal(searchData.length)
       setPage(1);
-      setSearchTxt(value.trim());
-
+      setSearchTxt(searchValue);
     }
   };
-
-  
 
   const refreshPage = () => {
     window.location.reload();
   };
-  console.log(searchData)
+
   return (
     <Wrapper>
       <Card
@@ -97,11 +126,12 @@ const getListData = useCallback(async () => {
         }
       > 
         <Table
-          dataSource={data}
+          dataSource={searchData}
           columns={COLUMN_CONFIG}
           pagination={false}
           loading={loading}
           scroll={{ x: "max-content" }}
+          className='antd-table'
         />
         <Pagination
           style={{ float: "right", marginTop: 10 }}

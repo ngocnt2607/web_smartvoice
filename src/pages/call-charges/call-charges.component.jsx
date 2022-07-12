@@ -37,6 +37,7 @@ export default function SmartVoice() {
           pagination={false}
           loading={loading}
           scroll={{ x: 'max-content' }}
+          className='antd-table'
         />
         <Pagination
           style={{ float: 'right', marginTop: 10 }}
