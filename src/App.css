@@ -1,0 +1,36 @@
+.trigger {
+  padding: 0 24px;
+  font-size: 18px;
+  line-height: 64px;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.trigger:hover {
+  color: #1890ff;
+}
+
+.logo {
+  float: left;
+  width: 120px;
+  height: 100vh;
+  margin: 2px 40px 0px 0px;
+  position: relative;
+}
+
+.logo > img {
+  width: 120px;
+  height: 60px;
+  position: absolute;
+}
+
+.site-layout .site-layout-background {
+  background: #fff;
+}
+[data-theme='dark'] .site-layout .site-layout-background {
+  background: #141414;
+}
+
+.d-none {
+  display: 'none' !important;
+}
