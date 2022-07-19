@@ -8,7 +8,7 @@ class SmartVoiceAPI {
       const response = await axios.request({
         method: 'GET',
         baseURL: process.env.REACT_APP_BASE_URL,
-        url: `getsmartsip?month=202207`,
+        url: `getsmartsip`,
       })
       return response
     } catch (error) {

@@ -4,6 +4,7 @@ import SmartVoiceAPI from '../../api/call-charges.api';
 import Wrapper from '../../common/Wrapper';
 import { COLUMN_CONFIG } from './table.config';
 
+
 export default function SmartVoice() {
   const [data, setData] = useState([]);
   const [page, setPage] = useState(1);
@@ -15,7 +16,25 @@ export default function SmartVoice() {
     const response = await SmartVoiceAPI.getAllSmartVoiceList();
     console.log(response);
     setLoading(false);
-    setData(response.data?.users);
+    setData(response?.data?.users?.map((item) => {
+      const number = item?.['Noi mang'];
+      const number1 = item?.['Ngoai mang di dong'];
+      const number2 = item?.['Cước sub'];
+      const number3 = item?.['Ngoai mang co dinh'];
+      const number4 = item?.['noi hat'];
+      const number5 = item?.['Tổng theo ngày'];
+      const nf = new Intl.NumberFormat('en-US');
+      console.log(item)
+         return ({
+         ...item,
+         'Noi mang': nf.format(number),
+         'Ngoai mang di dong': nf.format(number1),
+         'Cước sub': nf.format(number2),
+         'Ngoai mang co dinh': nf.format(number3),
+         'noi hat': nf.format(number4),
+         'Tổng theo ngày': nf.format(number5)
+         })
+        }));
     setTotal(response.data?.users?.length);
   }, []);
 

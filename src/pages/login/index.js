@@ -112,7 +112,7 @@ const Login = () => {
               rules={[
                 {
                   required: true,
-                  message: "Vui lòng không để trống tên đăng nhập!",
+                  message: "Vui lòng không để trống mật khẩu!",
                 },
                 {
                   whitespace: true,
