@@ -106,7 +106,7 @@ export default function CreateSpamHotline() {
       </Button>
 
       <Modal
-        title="Tạo campagin"
+        title="Thêm mới số Spam"
         visible={visible}
         onCancel={onHideModal}
         footer={
