@@ -133,12 +133,12 @@ export default function Campaign() {
           scroll={{ x: "max-content" }}
           className='antd-table'
         />
-        <Pagination
-          style={{ float: "right", marginTop: 10 }}
-          pageSize={10}
-          total={total}
-          current={page}
-          onChange={handlePageChange}
+         <Pagination
+        //  style={{ float: "right", marginTop: 10 }}
+          //pageSize={10}
+         // total={total}
+         // current={page}
+         // onChange={handlePageChange}
         />
       </Card>
     </Wrapper>
