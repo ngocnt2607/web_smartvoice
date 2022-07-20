@@ -74,7 +74,7 @@ export default function SmartVoice() {
           className='antd-table'
         />
         <Pagination
-        //  style={{ float: 'right', marginTop: 10 }}
+          style={{ float: 'right', marginTop: 10 }}
         //  pageSize={10}
         //  total={total}
          // current={page}
